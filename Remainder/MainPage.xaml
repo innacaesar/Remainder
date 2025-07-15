@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Remainder.ViewModels"
+             x:Class="Remainder.MainPage">
+
+    <StackLayout Padding="20">
+        <Label Text="Todo List" FontSize="24" HorizontalOptions="Center"/>
+        <Entry Placeholder="רשום משימה" Text="{Binding NewTaskTitle, Mode=TwoWay}"/>
+        <Button Text="להוסיף" Command="{Binding AddItemCommand}"/>
+
+        <CollectionView ItemsSource="{Binding TodoItems}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal" Padding="5">
+                        
+                        <Label Text="{Binding Title}"  FontSize="18" VerticalOptions="Center"/>
+                        <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                           />
+                           
+                       
+
+                        <Button Text="X" Background="White" TextColor="Black" FontSize="Large"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainViewModel}}, Path=DeleteItemCommand}"
+                                CommandParameter="{Binding .}"/>
+                        
+                    </StackLayout>
+                </DataTemplate>
+                
+            </CollectionView.ItemTemplate>
+            
+            
+        </CollectionView>
+
+
+    </StackLayout>
+
+</ContentPage>
