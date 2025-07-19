@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Remainder.ViewModels"
+             xmlns:viewmodels="clr-namespace:Remainder.ViewModels"
              x:Class="Remainder.MainPage">
 
     <StackLayout Padding="20">
@@ -11,25 +11,69 @@
 
         <CollectionView ItemsSource="{Binding TodoItems}">
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Orientation="Horizontal" Padding="5">
-                        
-                        <Label Text="{Binding Title}"  FontSize="18" VerticalOptions="Center"/>
-                        <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}"
-                           />
-                           
-                       
 
-                        <Button Text="X" Background="White" TextColor="Black" FontSize="Large"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:MainViewModel}}, Path=DeleteItemCommand}"
-                                CommandParameter="{Binding .}"/>
-                        
-                    </StackLayout>
+                <DataTemplate >
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItem Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=DeleteItemCommand}"
+                                       CommandParameter="{Binding .}">
+                                <!--  שימוש בICONS  -->
+                                <SwipeItem.IconImageSource>
+                                    <FontImageSource>
+                                        <FontImageSource.FontFamily>MaterialSymbols</FontImageSource.FontFamily>
+                                        <FontImageSource.Glyph>&#xe872;</FontImageSource.Glyph>
+                                    </FontImageSource>
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+
+ 
+                            <SwipeItem Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=ToggleCompleteCommand}"
+                                        CommandParameter="{Binding .}">
+                                
+                                <SwipeItem.IconImageSource>
+                                    <!--<FontImageSource Glyph="{Binding CompleteIcon}"  לא עובד-->
+                                    <FontImageSource Glyph="{Binding IsCompleted}"
+                                          FontFamily="MaterialSymbols"
+                                          Size="40"
+                                          Color="Black" />
+                                </SwipeItem.IconImageSource>
+                            </SwipeItem>
+
+                            <SwipeItem Text="צפייה"
+                                       Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=ShowItemCommand}"
+                                        CommandParameter="{Binding .}"/>
+                            </SwipeView.RightItems>
+
+                        <!--  Use a Grid inside a Border for a modern card view  -->
+                        <Border
+                Margin="15,7"
+                Padding="15"
+                BackgroundColor="White"
+                Stroke="LightGray"
+                StrokeShape="RoundRectangle 10">
+
+                            <Grid ColumnDefinitions="*,*">
+                                <!--  Task Description  -->
+                                <Label Grid.Column="1"
+                                FontAttributes="Bold"
+                                FontSize="16"
+                                Text="{Binding Title}"
+                                VerticalOptions="Center" />
+                                        <!--  Due Date  -->
+                                <Label 
+                                Grid.Column="0"
+                                FontSize="13"
+                                Text="{Binding CreatedDate, StringFormat='Due: {0:dd/MM/yyyy}'}"
+                                TextColor="Gray"
+                                VerticalOptions="Center" />
+
+                            </Grid>
+                        </Border>
+                    </SwipeView>
                 </DataTemplate>
-                
             </CollectionView.ItemTemplate>
-            
-            
+
+
         </CollectionView>
 
 
