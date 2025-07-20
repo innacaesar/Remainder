@@ -2,9 +2,10 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Remainder.Data;
-using Remainder.Models;
 using Remainder.Helper;
+using Remainder.Models;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace Remainder.ViewModels
 {
@@ -27,6 +28,9 @@ namespace Remainder.ViewModels
 
         [ObservableProperty]
         private string completeIcon=FontHelper.NOT_COMPLETE_ICON;
+
+        [ObservableProperty]
+        private string colorComplete = "#FF0000"; // Default color for not completed tasks
         public MainViewModel()
         {
             _database = new TodoDatabase();
@@ -70,8 +74,10 @@ namespace Remainder.ViewModels
         public async Task ToggleComplete(TodoItem item)
         {
             item.IsCompleted = !item.IsCompleted;
-            CompleteIcon = item.IsCompleted ? FontHelper.COMPLETE_ICON : FontHelper.NOT_COMPLETE_ICON;
-            
+
+            //not working without converters:
+            //CompleteIcon = item.IsCompleted ? FontHelper.COMPLETE_ICON : FontHelper.NOT_COMPLETE_ICON; // Update icon based on completion status
+           // ColorComplete = item.IsCompleted ? "#00FF00" : "#FF0000"; // Change color based on completion status
             await _database.UpdateStatus(item);
             LoadItems();
         }
@@ -82,6 +88,7 @@ namespace Remainder.ViewModels
             await App.Current.MainPage.DisplayAlert("משימה", $"{item.Title}\n העם בוצע {item.IsCompleted}\n תאריך {item.CreatedDate}", "אישור");
            
         }
+        
 
     }
 }

@@ -9,7 +9,7 @@
         <Entry Placeholder="רשום משימה" Text="{Binding NewTaskTitle, Mode=TwoWay}"/>
         <Button Text="להוסיף" Command="{Binding AddItemCommand}"/>
 
-        <CollectionView ItemsSource="{Binding TodoItems}">
+        <CollectionView ItemsSource="{Binding TodoItems}" SelectionMode="Single">
             <CollectionView.ItemTemplate>
 
                 <DataTemplate >
@@ -32,10 +32,10 @@
                                 
                                 <SwipeItem.IconImageSource>
                                     <!--<FontImageSource Glyph="{Binding CompleteIcon}"  לא עובד-->
-                                    <FontImageSource Glyph="{Binding IsCompleted}"
+                                    <FontImageSource Glyph="{Binding IsCompleted, Converter={StaticResource CompleteIconConverter}}" 
                                           FontFamily="MaterialSymbols"
                                           Size="40"
-                                          Color="Black" />
+                                          Color="{Binding IsCompleted, Converter={StaticResource CompleteColorConverter}}" />
                                 </SwipeItem.IconImageSource>
                             </SwipeItem>
 
