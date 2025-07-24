@@ -15,9 +15,13 @@ namespace Remainder
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                     fonts.AddFont("MaterialSymbolsOutlined.ttf", "MaterialSymbols");
                 });
+            //Dependency Injection
+            builder.Services.AddSingleton<Services.ITaskRepository, Services.TodoDatabase>();
+            builder.Services.AddTransient<MainPage>();
+            builder.Services.AddTransient<ViewModels.MainViewModel>();
 
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

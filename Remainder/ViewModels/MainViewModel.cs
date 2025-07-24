@@ -1,9 +1,9 @@
 ﻿
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Remainder.Data;
 using Remainder.Helper;
 using Remainder.Models;
+using Remainder.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
 
@@ -12,7 +12,8 @@ namespace Remainder.ViewModels
     public partial class MainViewModel : ObservableObject
     {
 
-        private readonly TodoDatabase _database;
+        //private readonly TodoDatabase _database;
+        private readonly ITaskRepository _repository;
 
         [ObservableProperty]
         private ObservableCollection<TodoItem> todoItems;
@@ -31,9 +32,10 @@ namespace Remainder.ViewModels
 
         [ObservableProperty]
         private string colorComplete = "#FF0000"; // Default color for not completed tasks
-        public MainViewModel()
+        public MainViewModel(ITaskRepository task) //parameter injection for repository
         {
-            _database = new TodoDatabase();
+           //_database = new TodoDatabase();
+            _repository = task;
             LoadItems();
 
         }
@@ -42,7 +44,7 @@ namespace Remainder.ViewModels
         [RelayCommand]
         private async void LoadItems()
         {
-            var items = await _database.GetItems();
+            var items = await _repository.GetItems();
             TodoItems = new ObservableCollection<TodoItem>(items);
 
 
@@ -56,7 +58,7 @@ namespace Remainder.ViewModels
             if (!string.IsNullOrEmpty(newTaskTitle))
             {
                 var newItem = new TodoItem { Title = NewTaskTitle, IsCompleted = false, CreatedDate = DateTime.UtcNow };
-                await _database.SaveItem(newItem);
+                await _repository.SaveItem(newItem);
                 NewTaskTitle = "";
                 LoadItems();
             }
@@ -65,7 +67,7 @@ namespace Remainder.ViewModels
         [RelayCommand]
         private async void DeleteItem(TodoItem item)
         {
-            await _database.DeleteItem(item);
+            await _repository.DeleteItem(item);
             LoadItems();
         }
 
@@ -78,7 +80,7 @@ namespace Remainder.ViewModels
             //not working without converters:
             //CompleteIcon = item.IsCompleted ? FontHelper.COMPLETE_ICON : FontHelper.NOT_COMPLETE_ICON; // Update icon based on completion status
            // ColorComplete = item.IsCompleted ? "#00FF00" : "#FF0000"; // Change color based on completion status
-            await _database.UpdateStatus(item);
+            await _repository.UpdateStatus(item);
             LoadItems();
         }
         [RelayCommand]

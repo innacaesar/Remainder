@@ -39,9 +39,10 @@
                                 </SwipeItem.IconImageSource>
                             </SwipeItem>
 
-                            <SwipeItem Text="צפייה"
+                            <SwipeItem 
+                                       IconImageSource="view.png"
                                        Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:MainViewModel}}, Path=ShowItemCommand}"
-                                        CommandParameter="{Binding .}"/>
+                                       CommandParameter="{Binding .}"/>
                             </SwipeView.RightItems>
 
                         <!--  Use a Grid inside a Border for a modern card view  -->

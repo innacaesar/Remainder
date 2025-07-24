@@ -1,10 +1,11 @@
 ﻿
 using Remainder.Models;
+using Remainder.Services;
 using SQLite;
 
-namespace Remainder.Data
+namespace Remainder.Services
 {    
-    public class TodoDatabase
+    public class TodoDatabase : ITaskRepository
     {
         private readonly SQLiteAsyncConnection _connection;
         public TodoDatabase()
